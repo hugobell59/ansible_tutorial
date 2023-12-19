@@ -13,3 +13,6 @@ server3.hugobell.net
 
 [docker]
 server5.hugobell.net
+
+[workstations]
+arduis.hugobell.net
