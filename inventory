@@ -1,4 +1,15 @@
+uptimekuma.hugobell.net
+npm.hugobell.net
+
+[web_servers]
 server1.hugobell.net
+server4.hugobell.net
+
+[db_servers]
 server2.hugobell.net
+
+[file_servers]
 server3.hugobell.net
-rockytime.hugobell.net
+
+[docker]
+server5.hugobell.net

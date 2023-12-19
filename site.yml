@@ -1,0 +1,87 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+  - name: Install updates (CentOS)
+    dnf:
+      update_only: yes
+      update_cache: yes
+    when: ansible_distribution == "CentOS"
+
+  - name: Install updates (Debian)
+    apt:
+      upgrade: dist
+      update_cache: yes
+    when: ansible_distribution == "Debian"
+
+- hosts: web_servers
+  become: true
+  tasks:
+  - name: install apache2 and php package for Debian Servers
+    apt:
+      name: 
+        - apache2
+        - libapache2-mod-php
+      state: latest
+    when: ansible_distribution == "Debian"
+
+  - name: install httpd and php package for Centos Servers
+    dnf:
+      name: 
+        - httpd
+        - php
+      state: latest
+    when: ansible_distribution == "CentOS"
+
+- hosts: db_servers
+  become: true
+  tasks:
+  - name: Install mariadb packacge (CentOS)
+    dnf:
+      name: mariadb
+      state: latest
+    when: ansible_distribution == "CentOS"
+  - name: Install mariadb packacge (Debian)
+    apt:
+      name: mariadb-server
+      state: latest
+    when: ansible_distribution == "Debian"
+
+- hosts: file_servers
+  become: true
+  tasks:
+  - name: install Samba package
+    package:
+      name: samba
+      state: latest
+
+- hosts: docker
+  become: true
+  tasks:
+  - name: Remove unwanted old packages
+    apt:
+      name:
+        - docker.io
+        - docker-doc
+        - docker-compose
+        - podman-docker
+        - containerd
+        - runc
+      state: absent
+    when: ansible_distribution == "Debian"
+  - name: Install base Debian packages
+    apt:
+      name: 
+        - nmon
+        - vim
+        - tree
+        - mlocate
+        - neofetch
+        - ca-certificates
+        - curl
+        - gnupg
+        - zabbix-agent2
+      state: latest
+    when: ansible_distribution == "Debian"
+
